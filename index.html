@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ColrMedia — Bold Design, Fearlessly Crafted</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ───────────────────────────────────────────── */
+:root {
+  --bg:        #0E0F14;
+  --surface:   #18191F;
+  --elevated:  #22232B;
+  --border:    #2E2F38;
+  --border-hi: rgba(255,255,255,.08);
+
+  --violet:    #5141E5;
+  --violet-d:  #3D2FD9;
+  --violet-l:  #7165EE;
+  --magenta:   #E8186D;
+  --magenta-l: #F02E80;
+
+  --teal:      #00C2CB;
+  --lime:      #72C341;
+  --orange:    #FF6B2B;
+
+  --text:      #F5F5F7;
+  --muted:     #9C9EAB;
+  --hint:      #4A4D5C;
+
+  --r: 12px;
+  --r-lg: 18px;
+}
+
+/* ─── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+
+/* ─── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ─── UTILITY ───────────────────────────────────────────── */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+
+/* ─── SCROLL REVEAL ─────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-d1 { transition-delay: .08s; }
+.reveal-d2 { transition-delay: .16s; }
+.reveal-d3 { transition-delay: .24s; }
+.reveal-d4 { transition-delay: .32s; }
+.reveal-d5 { transition-delay: .40s; }
+
+/* ─── PROGRESS BAR ──────────────────────────────────────── */
+#progress {
+  position: fixed; top: 0; left: 0; width: 0%; height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--magenta));
+  z-index: 9999;
+  transition: width .1s linear;
+}
+
+/* ────────────────────────────────────────────────────────── */
+/*  NAV                                                       */
+/* ────────────────────────────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 64px;
+  display: flex; align-items: center;
+  transition: background .3s, border-bottom .3s, backdrop-filter .3s;
+}
+#nav.scrolled {
+  background: rgba(14,15,20,.82);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 0.5px solid var(--border);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+}
+.nav-logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 700;
+  letter-spacing: -.03em;
+  color: var(--text);
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo .dot { color: var(--violet); }
+.nav-logo .chameleon {
+  width: 32px; height: 32px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.nav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px; font-weight: 400; color: var(--muted);
+  position: relative; transition: color .2s;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1.5px;
+  background: var(--violet);
+  transition: width .22s cubic-bezier(.16,1,.3,1);
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  font-size: 13px; font-weight: 500;
+  background: var(--violet);
+  color: #fff; border: none;
+  padding: 9px 22px; border-radius: 8px;
+  transition: background .18s, transform .15s;
+}
+.nav-cta:hover { background: var(--violet-l); transform: translateY(-1px); }
+.nav-cta:active { transform: translateY(0); }
+
+/* hamburger */
+.ham { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+.ham span { display: block; width: 22px; height: 1.5px; background: var(--muted); border-radius: 2px; transition: .2s; }
+
+/* ────────────────────────────────────────────────────────── */
+/*  HERO                                                      */
+/* ────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding-top: 64px;
+}
+
+/* ambient orbs */
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); opacity: .18; pointer-events: none;
+}
+.orb-v { width: 600px; height: 600px; background: var(--violet); top: -100px; left: -160px; }
+.orb-m { width: 400px; height: 400px; background: var(--magenta); bottom: -80px; right: -80px; opacity: .12; }
+.orb-t { width: 300px; height: 300px; background: var(--teal); top: 40%; right: 20%; opacity: .08; }
+
+/* noise grain overlay */
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 860px;
+  padding: 5rem 0 4rem;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+  border: 0.5px solid var(--border);
+  padding: 6px 14px; border-radius: 999px;
+  margin-bottom: 2rem;
+  animation: fadeUp .7s .1s both cubic-bezier(.16,1,.3,1);
+}
+.hero-tag .pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--lime);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(114,195,65,.4); }
+  50% { box-shadow: 0 0 0 5px rgba(114,195,65,0); }
+}
+
+.hero-headline {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 800;
+  line-height: .96;
+  letter-spacing: -.04em;
+  margin-bottom: 1.75rem;
+}
+.hero-headline .l1 {
+  display: block; color: var(--violet);
+  animation: fadeUp .75s .2s both cubic-bezier(.16,1,.3,1);
+}
+.hero-headline .l2 {
+  display: block; color: var(--magenta);
+  animation: fadeUp .75s .32s both cubic-bezier(.16,1,.3,1);
+}
+.hero-headline .l3 {
+  display: block; color: var(--text);
+  animation: fadeUp .75s .44s both cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero-body {
+  font-size: 16px; color: var(--muted);
+  max-width: 480px; line-height: 1.65;
+  margin-bottom: 2.25rem;
+  animation: fadeUp .7s .56s both cubic-bezier(.16,1,.3,1);
+}
+
+.hero-ctas {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  animation: fadeUp .7s .64s both cubic-bezier(.16,1,.3,1);
+}
+.btn-primary {
+  font-size: 14px; font-weight: 500;
+  background: var(--violet); color: #fff; border: none;
+  padding: 13px 28px; border-radius: 10px;
+  transition: background .18s, transform .15s, box-shadow .18s;
+}
+.btn-primary:hover {
+  background: var(--violet-l);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(81,65,229,.35);
+}
+.btn-ghost {
+  font-size: 14px; font-weight: 500;
+  background: transparent; color: var(--text);
+  border: 0.5px solid var(--border);
+  padding: 13px 28px; border-radius: 10px;
+  transition: border-color .18s, transform .15s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.3); transform: translateY(-1px); }
+
+.hero-tags {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 3rem;
+  animation: fadeUp .7s .72s both cubic-bezier(.16,1,.3,1);
+}
+.s-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500;
+  padding: 7px 16px; border-radius: 999px;
+}
+.s-tag svg { width: 14px; height: 14px; stroke-width: 2; }
+.s-tag-v { background: rgba(0,194,203,.1); color: var(--teal); border: 0.5px solid rgba(0,194,203,.25); }
+.s-tag-g { background: rgba(114,195,65,.1); color: var(--lime); border: 0.5px solid rgba(114,195,65,.25); }
+.s-tag-l { background: rgba(255,107,43,.1); color: var(--orange); border: 0.5px solid rgba(255,107,43,.25); }
+
+/* scroll hint */
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  animation: fadeUp .7s .9s both;
+}
+.scroll-hint span { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--hint); }
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--border), transparent);
+  animation: scrollDown 1.6s infinite;
+}
+@keyframes scrollDown {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ────────────────────────────────────────────────────────── */
+/*  MARQUEE STRIP                                             */
+/* ────────────────────────────────────────────────────────── */
+.marquee-strip {
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--surface);
+}
+.marquee-track {
+  display: inline-flex; gap: 0;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--hint); padding: 0 32px;
+}
+.marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--violet); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ────────────────────────────────────────────────────────── */
+/*  SECTION HEADERS                                           */
+/* ────────────────────────────────────────────────────────── */
+.sec-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--violet); margin-bottom: .75rem; display: block;
+}
+.sec-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -.025em; color: var(--text);
+  margin-bottom: 1rem;
+}
+.sec-body {
+  font-size: 15px; color: var(--muted); max-width: 500px; line-height: 1.65;
+}
+
+/* ────────────────────────────────────────────────────────── */
+/*  SERVICES — BENTO                                          */
+/* ────────────────────────────────────────────────────────── */
+#services { padding: 7rem 0; }
+.services-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 3rem; gap: 2rem; flex-wrap: wrap;
+}
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto auto;
+  gap: 12px;
+}
+.bc {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s cubic-bezier(.16,1,.3,1), border-color .25s, box-shadow .25s;
+}
+.bc::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2.5px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+.bc:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 60px rgba(81,65,229,.14);
+  border-color: rgba(81,65,229,.25);
+}
+
+/* video — wide */
+.bc-video  { grid-column: span 7; }
+.bc-video::before { background: var(--teal); }
+.bc-video:hover { box-shadow: 0 20px 60px rgba(0,194,203,.12); border-color: rgba(0,194,203,.3); }
+
+/* graphic */
+.bc-graphic { grid-column: span 5; }
+.bc-graphic::before { background: var(--lime); }
+.bc-graphic:hover { box-shadow: 0 20px 60px rgba(114,195,65,.1); border-color: rgba(114,195,65,.25); }
+
+/* logo */
+.bc-logo { grid-column: span 5; }
+.bc-logo::before { background: var(--orange); }
+.bc-logo:hover { box-shadow: 0 20px 60px rgba(255,107,43,.1); border-color: rgba(255,107,43,.25); }
+
+/* stat */
+.bc-stat { grid-column: span 4; display: flex; flex-direction: column; justify-content: center; }
+
+/* cta mini */
+.bc-cta-mini {
+  grid-column: span 3;
+  background: var(--violet);
+  border-color: transparent;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.bc-cta-mini:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 60px rgba(81,65,229,.4);
+  border-color: transparent;
+}
+.bc-cta-mini::before { display: none; }
+
+.bc-pill {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px;
+  margin-bottom: 1rem;
+}
+.pill-v { background: rgba(0,194,203,.12); color: var(--teal); border: 0.5px solid rgba(0,194,203,.3); }
+.pill-g { background: rgba(114,195,65,.12); color: var(--lime); border: 0.5px solid rgba(114,195,65,.3); }
+.pill-l { background: rgba(255,107,43,.12); color: var(--orange); border: 0.5px solid rgba(255,107,43,.3); }
+
+.bc-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); margin-bottom: .5rem;
+  line-height: 1.2;
+}
+.bc-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+.bc-features {
+  margin-top: 1.25rem;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.bc-feat {
+  font-size: 11px; color: var(--hint);
+  background: var(--elevated);
+  padding: 4px 10px; border-radius: 6px;
+  border: 0.5px solid var(--border);
+}
+
+.bc-learn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; margin-top: 1.5rem;
+  color: var(--muted); border: none; background: none;
+  padding: 0; transition: color .18s, gap .18s;
+}
+.bc-learn:hover { color: var(--text); gap: 10px; }
+
+.bc-stat-num {
+  font-family: 'Sora', sans-serif;
+  font-size: 44px; font-weight: 800;
+  color: var(--violet); line-height: 1;
+  margin-bottom: .35rem; letter-spacing: -.04em;
+}
+.bc-stat-label { font-size: 12px; color: var(--muted); }
+
+.bc-cta-label {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px; font-weight: 700;
+  color: #fff; line-height: 1.2;
+}
+.bc-cta-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500;
+  background: rgba(255,255,255,.15);
+  color: #fff; border: none;
+  padding: 8px 16px; border-radius: 7px;
+  transition: background .18s;
+  margin-top: 1rem;
+}
+.bc-cta-btn:hover { background: rgba(255,255,255,.25); }
+
+/* ────────────────────────────────────────────────────────── */
+/*  ABOUT                                                     */
+/* ────────────────────────────────────────────────────────── */
+#about {
+  padding: 7rem 0;
+  position: relative;
+}
+/* wave divider */
+#about::before {
+  content: '';
+  position: absolute; top: -1px; left: 0; right: 0;
+  height: 80px;
+  background: var(--bg);
+  clip-path: ellipse(55% 100% at 50% 0%);
+  z-index: 1;
+}
+.about-bg {
+  position: absolute; inset: 0;
+  background: var(--surface);
+  clip-path: none;
+}
+
+.about-inner {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  align-items: center;
+}
+
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-top: 2.5rem;
+}
+.a-stat {
+  background: var(--surface);
+  padding: 1.5rem;
+}
+.a-stat-num {
+  font-family: 'Sora', sans-serif;
+  font-size: 36px; font-weight: 800;
+  color: var(--violet);
+  letter-spacing: -.04em; line-height: 1;
+  margin-bottom: 4px;
+}
+.a-stat-label { font-size: 12px; color: var(--muted); }
+
+.about-visual {
+  position: relative;
+}
+.about-img-wrap {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  background: var(--elevated);
+  position: relative;
+}
+/* fake Kathmandu skyline SVG */
+.about-img-wrap svg { width: 100%; height: 100%; }
+.about-badge {
+  position: absolute; bottom: 1.5rem; left: 1.5rem;
+  background: rgba(14,15,20,.85);
+  backdrop-filter: blur(16px);
+  border: 0.5px solid var(--border);
+  border-radius: var(--r);
+  padding: .85rem 1.1rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); flex-shrink: 0; animation: pulse 2s infinite; }
+.badge-text { font-size: 12px; font-weight: 500; color: var(--text); }
+.badge-sub  { font-size: 11px; color: var(--muted); }
+
+/* ────────────────────────────────────────────────────────── */
+/*  WORK / PORTFOLIO                                          */
+/* ────────────────────────────────────────────────────────── */
+#work { padding: 7rem 0; }
+.work-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem;
+}
+.filter-pills {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.filter-pill {
+  font-size: 11px; font-weight: 500;
+  padding: 6px 16px; border-radius: 999px;
+  border: 0.5px solid var(--border);
+  background: transparent; color: var(--muted);
+  cursor: pointer; transition: all .18s;
+}
+.filter-pill:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+.filter-pill.active { background: var(--violet); color: #fff; border-color: transparent; }
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.work-card {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  cursor: pointer;
+  transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s;
+  position: relative;
+}
+.work-card:hover { transform: translateY(-4px); }
+.work-card:hover .work-overlay { opacity: 1; }
+.work-thumb {
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+}
+.work-thumb svg { width: 100%; height: 100%; display: block; }
+.work-overlay {
+  position: absolute; inset: 0;
+  background: rgba(81,65,229,.85);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  opacity: 0;
+  transition: opacity .22s;
+}
+.wo-text { font-size: 13px; font-weight: 600; color: #fff; }
+.wo-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; }
+
+.work-info { padding: 1rem 1.25rem; }
+.wi-tags { display: flex; gap: 6px; margin-bottom: .6rem; flex-wrap: wrap; }
+.wi-tag { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 999px; }
+.wi-name { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.wi-sub  { font-size: 12px; color: var(--muted); }
+
+/* wide card */
+.work-card.wide { grid-column: span 2; }
+.work-card.wide .work-thumb { aspect-ratio: 16/7; }
+
+/* ────────────────────────────────────────────────────────── */
+/*  PROCESS                                                   */
+/* ────────────────────────────────────────────────────────── */
+#process { padding: 7rem 0; background: var(--surface); }
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-top: 3rem;
+}
+.proc-step {
+  background: var(--surface);
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+.proc-num {
+  font-family: 'Sora', sans-serif;
+  font-size: 48px; font-weight: 800;
+  color: var(--elevated);
+  line-height: 1; margin-bottom: .75rem;
+  letter-spacing: -.04em;
+}
+.proc-title { font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
+.proc-desc  { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.proc-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
+
+/* ────────────────────────────────────────────────────────── */
+/*  TESTIMONIALS                                              */
+/* ────────────────────────────────────────────────────────── */
+#testimonials { padding: 7rem 0; overflow: hidden; }
+.testi-track {
+  display: flex; gap: 16px;
+  animation: marquee 40s linear infinite;
+  width: max-content;
+}
+.testi-track:hover { animation-play-state: paused; }
+.testi-card {
+  width: 340px; flex-shrink: 0;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-left: 2px solid var(--violet);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+}
+.testi-quote { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+.testi-author { font-size: 13px; font-weight: 500; color: var(--text); }
+.testi-role   { font-size: 11px; color: var(--hint); margin-top: 2px; }
+.stars { color: var(--orange); font-size: 12px; margin-bottom: .75rem; letter-spacing: 2px; }
+
+/* ────────────────────────────────────────────────────────── */
+/*  CONTACT                                                   */
+/* ────────────────────────────────────────────────────────── */
+#contact { padding: 7rem 0; }
+.contact-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+}
+.contact-info { padding-top: .5rem; }
+.contact-detail {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-top: 2rem;
+}
+.cd-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--elevated); border: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.cd-icon svg { width: 18px; height: 18px; stroke: var(--violet); stroke-width: 1.8; fill: none; }
+.cd-label { font-size: 11px; color: var(--hint); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; }
+.cd-val   { font-size: 14px; color: var(--text); }
+
+/* form */
+.form-wrap {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+}
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .5rem; }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--elevated);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 14px; font-family: inherit;
+  color: var(--text);
+  outline: none;
+  transition: border-color .18s, box-shadow .18s;
+  appearance: none;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--hint); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(81,65,229,.18);
+}
+.form-textarea { resize: vertical; min-height: 110px; }
+.form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239C9EAB' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+option { background: var(--elevated); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-submit {
+  width: 100%;
+  font-size: 14px; font-weight: 600;
+  background: var(--violet); color: #fff; border: none;
+  padding: 13px; border-radius: 10px;
+  transition: background .18s, transform .15s, box-shadow .18s;
+  letter-spacing: .01em;
+}
+.btn-submit:hover {
+  background: var(--violet-l);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(81,65,229,.35);
+}
+
+/* ────────────────────────────────────────────────────────── */
+/*  FOOTER                                                    */
+/* ────────────────────────────────────────────────────────── */
+footer {
+  border-top: 0.5px solid var(--border);
+  padding: 3rem 0 2rem;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+}
+.footer-logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px; font-weight: 700;
+  letter-spacing: -.03em;
+  margin-bottom: .75rem;
+}
+.footer-logo span { color: var(--violet); }
+.footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 220px; }
+.footer-col-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--hint); margin-bottom: 1rem; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+.footer-links a { font-size: 13px; color: var(--muted); transition: color .18s; }
+.footer-links a:hover { color: var(--text); }
+.footer-address { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.footer-address a { color: var(--magenta); }
+.footer-bottom {
+  border-top: 0.5px solid var(--border);
+  margin-top: 2.5rem; padding-top: 1.25rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: .5rem;
+}
+.footer-copy { font-size: 12px; color: var(--hint); }
+.footer-legal { display: flex; gap: 1.25rem; }
+.footer-legal a { font-size: 12px; color: var(--hint); transition: color .18s; }
+.footer-legal a:hover { color: var(--muted); }
+
+/* ────────────────────────────────────────────────────────── */
+/*  MOBILE                                                    */
+/* ────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .about-inner, .contact-inner { grid-template-columns: 1fr; }
+  .about-visual { order: -1; max-width: 400px; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+  .work-grid { grid-template-columns: 1fr 1fr; }
+  .work-card.wide { grid-column: span 2; }
+}
+@media (max-width: 768px) {
+  .bento { display: flex; flex-direction: column; }
+  .bc-video, .bc-graphic, .bc-logo, .bc-stat, .bc-cta-mini { grid-column: auto; }
+  .nav-links, .nav-cta { display: none; }
+  .ham { display: flex; }
+  .work-grid { grid-template-columns: 1fr; }
+  .work-card.wide { grid-column: auto; }
+  .process-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .services-head { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 500px) {
+  .container { padding: 0 1.25rem; }
+  .hero-headline { font-size: 44px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- progress bar -->
+<div id="progress"></div>
+
+<!-- ═══════════════════════════════ NAV ══ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="chameleon" aria-hidden="true">🦎</div>
+        C<span class="dot">o</span>lrMedia
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Our Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a free quote</button>
+      <button class="ham" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ══ -->
+<section id="hero">
+  <div class="orb orb-v"></div>
+  <div class="orb orb-m"></div>
+  <div class="orb orb-t"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-tag">
+        <span class="pulse"></span>
+        Based in Kathmandu &nbsp;·&nbsp; Built for global reach
+      </div>
+      <h1 class="hero-headline">
+        <span class="l1">Bold design.</span>
+        <span class="l2">Fearlessly</span>
+        <span class="l3">crafted.</span>
+      </h1>
+      <p class="hero-body">
+        IT-enabled media outsourcing — combining graphic design, video post-production, and brand identity into one scalable production engine for growing teams.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a FREE quote</button>
+        <button class="btn-ghost" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">See our work ↓</button>
+      </div>
+      <div class="hero-tags">
+        <span class="s-tag s-tag-v">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          Video editing
+        </span>
+        <span class="s-tag s-tag-g">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>
+          Graphic design
+        </span>
+        <span class="s-tag s-tag-l">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Logo design
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ MARQUEE ══ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track" id="mq">
+    <span class="marquee-item"><span class="marquee-dot"></span>Video Post-Production</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Graphic Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Logo & Identity</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Color Grading</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Motion Graphics</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Brand Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Technical Illustration</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Platform Media</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Scalable Production</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>AI-Assisted Workflows</span>
+    <!-- duplicated for seamless loop -->
+    <span class="marquee-item"><span class="marquee-dot"></span>Video Post-Production</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Graphic Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Logo & Identity</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Color Grading</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Motion Graphics</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Brand Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Technical Illustration</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Platform Media</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Scalable Production</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>AI-Assisted Workflows</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SERVICES ══ -->
+<section id="services">
+  <div class="container">
+    <div class="services-head">
+      <div>
+        <span class="sec-label reveal">What we do</span>
+        <h2 class="sec-title reveal reveal-d1">Three services.<br>One production partner.</h2>
+      </div>
+      <p class="sec-body reveal reveal-d2">We produce high-quality visual assets through structured digital workflows, enabling businesses to scale their media production without investing in additional infrastructure.</p>
+    </div>
+
+    <div class="bento">
+      <!-- VIDEO -->
+      <div class="bc bc-video reveal">
+        <div class="bc-pill pill-v">Video editing</div>
+        <div class="bc-name">Storytelling &amp; Post-Production</div>
+        <div class="bc-desc">From raw footage to broadcast-ready content. We handle the full post-production pipeline — so your team focuses on what's next, not what's rendering.</div>
+        <div class="bc-features">
+          <span class="bc-feat">Color &amp; sound</span>
+          <span class="bc-feat">Motion graphics</span>
+          <span class="bc-feat">Storytelling</span>
+          <span class="bc-feat">Platform delivery</span>
+          <span class="bc-feat">Graphics &amp; branding</span>
+        </div>
+        <button class="bc-learn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a quote →</button>
+      </div>
+
+      <!-- GRAPHIC -->
+      <div class="bc bc-graphic reveal reveal-d1">
+        <div class="bc-pill pill-g">Graphic design</div>
+        <div class="bc-name">Technical Drafting &amp; Layout</div>
+        <div class="bc-desc">Precision visual work from illustration to platform-ready assets. Every pixel purposeful.</div>
+        <div class="bc-features">
+          <span class="bc-feat">Technical drafting</span>
+          <span class="bc-feat">Layout</span>
+          <span class="bc-feat">Illustration</span>
+          <span class="bc-feat">Platform media</span>
+        </div>
+        <button class="bc-learn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a quote →</button>
+      </div>
+
+      <!-- LOGO -->
+      <div class="bc bc-logo reveal reveal-d2">
+        <div class="bc-pill pill-l">Logo design</div>
+        <div class="bc-name">Identity Systems &amp; Wordmarks</div>
+        <div class="bc-desc">Brand marks built to scale. From initial concept to a complete identity system with lockups, usage guidelines, and scalable files.</div>
+        <div class="bc-features">
+          <span class="bc-feat">Wordmarks</span>
+          <span class="bc-feat">Lockups</span>
+          <span class="bc-feat">Brand systems</span>
+          <span class="bc-feat">Refinement</span>
+        </div>
+        <button class="bc-learn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a quote →</button>
+      </div>
+
+      <!-- STAT -->
+      <div class="bc bc-stat reveal reveal-d3">
+        <div class="bc-stat-num">100+</div>
+        <div class="bc-stat-label">Projects delivered globally</div>
+      </div>
+
+      <!-- CTA MINI -->
+      <div class="bc bc-cta-mini reveal reveal-d4">
+        <div class="bc-cta-label">Ready to be seen?</div>
+        <button class="bc-cta-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Free quote ↗</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ ABOUT ══ -->
+<section id="about" style="position:relative; padding: 7rem 0;">
+  <div class="about-bg"></div>
+  <div class="container">
+    <div class="about-inner">
+      <div>
+        <span class="sec-label reveal">Who we are</span>
+        <h2 class="sec-title reveal reveal-d1">Creative production,<br>technically executed.</h2>
+        <p class="sec-body reveal reveal-d2" style="margin-bottom: 1rem;">We are an IT-enabled media outsourcing studio based in Nepal and built for global collaboration — where creative production meets technical execution.</p>
+        <p class="sec-body reveal reveal-d3">Whether you're building a brand or managing ongoing content needs, ColrMedia functions as a reliable production partner — delivering precise, efficient, and scalable digital media solutions.</p>
+
+        <div class="about-stats reveal reveal-d4">
+          <div class="a-stat">
+            <div class="a-stat-num">5+</div>
+            <div class="a-stat-label">Years delivering</div>
+          </div>
+          <div class="a-stat">
+            <div class="a-stat-num">100+</div>
+            <div class="a-stat-label">Projects completed</div>
+          </div>
+          <div class="a-stat">
+            <div class="a-stat-num">20+</div>
+            <div class="a-stat-label">Global clients</div>
+          </div>
+          <div class="a-stat">
+            <div class="a-stat-num">3</div>
+            <div class="a-stat-label">Core services</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-visual reveal reveal-d2">
+        <div class="about-img-wrap">
+          <!-- Kathmandu skyline illustration -->
+          <svg viewBox="0 0 500 620" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- sky gradient -->
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d0e16"/>
+                <stop offset="60%" stop-color="#1a1230"/>
+                <stop offset="100%" stop-color="#22152a"/>
+              </linearGradient>
+              <linearGradient id="sunG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#E8186D" stop-opacity=".6"/>
+                <stop offset="100%" stop-color="#FF6B2B" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <rect width="500" height="620" fill="url(#sky)"/>
+            <!-- sun glow -->
+            <ellipse cx="260" cy="300" rx="180" ry="140" fill="url(#sunG)" opacity=".5"/>
+            <circle cx="260" cy="300" r="26" fill="#F5A524" opacity=".9"/>
+            <!-- mountains -->
+            <polygon points="0,400 120,240 240,380 500,400" fill="#16181F"/>
+            <polygon points="180,400 320,200 420,400" fill="#1a1c26"/>
+            <polygon points="300,400 420,260 500,320 500,400" fill="#14151e"/>
+            <!-- city silhouette -->
+            <rect x="0" y="370" width="500" height="250" fill="#0E0F14"/>
+            <!-- buildings -->
+            <rect x="10" y="310" width="30" height="90" fill="#18191F"/>
+            <rect x="50" y="290" width="40" height="110" fill="#16181F"/>
+            <rect x="100" y="320" width="25" height="80" fill="#1a1c24"/>
+            <rect x="135" y="270" width="50" height="130" fill="#18191F"/>
+            <rect x="195" y="300" width="35" height="100" fill="#14151e"/>
+            <rect x="240" y="280" width="45" height="120" fill="#1c1e28"/>
+            <rect x="295" y="310" width="28" height="90" fill="#18191F"/>
+            <rect x="333" y="260" width="55" height="140" fill="#16181F"/>
+            <rect x="398" y="290" width="38" height="110" fill="#1a1c24"/>
+            <rect x="446" y="320" width="54" height="80" fill="#18191F"/>
+            <!-- windows -->
+            <rect x="16" y="320" width="7" height="5" rx="1" fill="#5141E5" opacity=".6"/>
+            <rect x="26" y="320" width="7" height="5" rx="1" fill="#E8186D" opacity=".4"/>
+            <rect x="56" y="300" width="8" height="6" rx="1" fill="#5141E5" opacity=".5"/>
+            <rect x="68" y="300" width="8" height="6" rx="1" fill="#00C2CB" opacity=".4"/>
+            <rect x="56" y="315" width="8" height="6" rx="1" fill="#F5A524" opacity=".5"/>
+            <rect x="140" y="278" width="9" height="7" rx="1" fill="#5141E5" opacity=".7"/>
+            <rect x="153" y="278" width="9" height="7" rx="1" fill="#E8186D" opacity=".5"/>
+            <rect x="140" y="292" width="9" height="7" rx="1" fill="#72C341" opacity=".4"/>
+            <rect x="153" y="292" width="9" height="7" rx="1" fill="#5141E5" opacity=".4"/>
+            <rect x="140" y="306" width="9" height="7" rx="1" fill="#FF6B2B" opacity=".5"/>
+            <rect x="246" y="285" width="10" height="8" rx="1" fill="#5141E5" opacity=".8"/>
+            <rect x="260" y="285" width="10" height="8" rx="1" fill="#E8186D" opacity=".6"/>
+            <rect x="274" y="285" width="10" height="8" rx="1" fill="#00C2CB" opacity=".4"/>
+            <rect x="246" y="300" width="10" height="8" rx="1" fill="#F5A524" opacity=".5"/>
+            <rect x="260" y="300" width="10" height="8" rx="1" fill="#5141E5" opacity=".5"/>
+            <rect x="339" y="268" width="10" height="8" rx="1" fill="#E8186D" opacity=".7"/>
+            <rect x="353" y="268" width="10" height="8" rx="1" fill="#5141E5" opacity=".5"/>
+            <rect x="367" y="268" width="10" height="8" rx="1" fill="#72C341" opacity=".4"/>
+            <rect x="339" y="283" width="10" height="8" rx="1" fill="#5141E5" opacity=".6"/>
+            <rect x="353" y="283" width="10" height="8" rx="1" fill="#FF6B2B" opacity=".5"/>
+            <!-- temple spire -->
+            <polygon points="200,200 210,280 190,280" fill="#22232B"/>
+            <rect x="188" y="195" width="24" height="8" fill="#2E2F38"/>
+            <!-- pagoda tiers -->
+            <rect x="185" y="240" width="30" height="5" fill="#2E2F38"/>
+            <rect x="188" y="255" width="24" height="5" fill="#2E2F38"/>
+            <rect x="191" y="270" width="18" height="5" fill="#2E2F38"/>
+            <!-- star/light -->
+            <circle cx="260" cy="300" r="3" fill="#F5A524" opacity=".4"/>
+            <!-- violet glow on ground -->
+            <ellipse cx="250" cy="420" rx="200" ry="40" fill="#5141E5" opacity=".06"/>
+          </svg>
+          <div class="about-badge">
+            <div class="badge-dot"></div>
+            <div>
+              <div class="badge-text">Lalitpur, Kathmandu</div>
+              <div class="badge-sub">Bhanimandal 13, 2nd Floor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ WORK ══ -->
+<section id="work">
+  <div class="container">
+    <div class="work-head">
+      <div>
+        <span class="sec-label reveal">Portfolio</span>
+        <h2 class="sec-title reveal reveal-d1">Work that gets noticed.</h2>
+      </div>
+      <div class="filter-pills reveal reveal-d1">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="video" style="--fc: var(--teal)">Video</button>
+        <button class="filter-pill" data-filter="graphic" style="--fc: var(--lime)">Graphic</button>
+        <button class="filter-pill" data-filter="logo" style="--fc: var(--orange)">Logo</button>
+      </div>
+    </div>
+
+    <div class="work-grid">
+      <!-- card 1 — wide, video -->
+      <div class="work-card wide reveal" data-cat="video">
+        <div class="work-thumb">
+          <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+            <rect width="800" height="350" fill="#12131a"/>
+            <rect x="0" y="0" width="800" height="350" fill="url(#vg1)"/>
+            <defs>
+              <linearGradient id="vg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#001820" />
+                <stop offset="100%" stop-color="#0a1a2e"/>
+              </linearGradient>
+            </defs>
+            <!-- abstract film-strip -->
+            <rect x="60" y="80" width="680" height="190" rx="8" fill="none" stroke="#00C2CB" stroke-width="1" opacity=".2"/>
+            <rect x="60" y="80" width="30" height="190" fill="#00C2CB" opacity=".05"/>
+            <rect x="710" y="80" width="30" height="190" fill="#00C2CB" opacity=".05"/>
+            <!-- sprocket holes -->
+            <rect x="68" y="100" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="68" y="120" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="68" y="140" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="68" y="160" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="68" y="180" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="68" y="200" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="718" y="100" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="718" y="120" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="718" y="140" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="718" y="160" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="718" y="180" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <rect x="718" y="200" width="14" height="10" rx="2" fill="#00C2CB" opacity=".2"/>
+            <!-- play button -->
+            <circle cx="400" cy="175" r="40" fill="#00C2CB" opacity=".12"/>
+            <circle cx="400" cy="175" r="28" fill="none" stroke="#00C2CB" stroke-width="1" opacity=".5"/>
+            <polygon points="392,163 416,175 392,187" fill="#00C2CB" opacity=".7"/>
+            <!-- waveform -->
+            <g opacity=".35">
+              <rect x="140" y="155" width="3" height="40" rx="1" fill="#00C2CB"/>
+              <rect x="148" y="145" width="3" height="60" rx="1" fill="#00C2CB"/>
+              <rect x="156" y="160" width="3" height="30" rx="1" fill="#00C2CB"/>
+              <rect x="164" y="148" width="3" height="54" rx="1" fill="#00C2CB"/>
+              <rect x="172" y="158" width="3" height="34" rx="1" fill="#00C2CB"/>
+              <rect x="180" y="143" width="3" height="64" rx="1" fill="#00C2CB"/>
+              <rect x="188" y="162" width="3" height="26" rx="1" fill="#00C2CB"/>
+              <rect x="196" y="150" width="3" height="50" rx="1" fill="#00C2CB"/>
+              <rect x="204" y="165" width="3" height="20" rx="1" fill="#00C2CB"/>
+              <rect x="212" y="145" width="3" height="60" rx="1" fill="#00C2CB"/>
+              <rect x="220" y="158" width="3" height="34" rx="1" fill="#00C2CB"/>
+              <rect x="228" y="148" width="3" height="54" rx="1" fill="#00C2CB"/>
+              <rect x="560" y="155" width="3" height="40" rx="1" fill="#00C2CB"/>
+              <rect x="568" y="145" width="3" height="60" rx="1" fill="#00C2CB"/>
+              <rect x="576" y="162" width="3" height="26" rx="1" fill="#00C2CB"/>
+              <rect x="584" y="150" width="3" height="50" rx="1" fill="#00C2CB"/>
+              <rect x="592" y="158" width="3" height="34" rx="1" fill="#00C2CB"/>
+              <rect x="600" y="143" width="3" height="64" rx="1" fill="#00C2CB"/>
+              <rect x="608" y="163" width="3" height="24" rx="1" fill="#00C2CB"/>
+              <rect x="616" y="148" width="3" height="54" rx="1" fill="#00C2CB"/>
+              <rect x="624" y="158" width="3" height="34" rx="1" fill="#00C2CB"/>
+              <rect x="632" y="145" width="3" height="60" rx="1" fill="#00C2CB"/>
+              <rect x="640" y="162" width="3" height="26" rx="1" fill="#00C2CB"/>
+              <rect x="648" y="155" width="3" height="40" rx="1" fill="#00C2CB"/>
+            </g>
+            <!-- label -->
+            <text x="400" y="290" text-anchor="middle" font-family="Sora,sans-serif" font-size="13" fill="#9C9EAB" opacity=".6">Brand Campaign — Post-Production</text>
+          </svg>
+          <div class="work-overlay">
+            <div class="wo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>
+            <div class="wo-text">View project</div>
+          </div>
+        </div>
+        <div class="work-info">
+          <div class="wi-tags">
+            <span class="wi-tag" style="background:rgba(0,194,203,.1);color:var(--teal);border:0.5px solid rgba(0,194,203,.25)">Video editing</span>
+            <span class="wi-tag" style="background:rgba(255,107,43,.1);color:var(--orange);border:0.5px solid rgba(255,107,43,.2)">Color grading</span>
+          </div>
+          <div class="wi-name">Himalayan Brand Campaign</div>
+          <div class="wi-sub">Full post-production pipeline · 4 deliverables</div>
+        </div>
+      </div>
+
+      <!-- card 2 — graphic -->
+      <div class="work-card reveal reveal-d1" data-cat="graphic">
+        <div class="work-thumb">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="300" fill="#0f1118"/>
+            <defs>
+              <linearGradient id="gg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0a1a0a"/>
+                <stop offset="100%" stop-color="#151f10"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="300" fill="url(#gg1)"/>
+            <!-- grid lines -->
+            <line x1="0" y1="50" x2="400" y2="50" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="0" y1="100" x2="400" y2="100" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="0" y1="150" x2="400" y2="150" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="0" y1="200" x2="400" y2="200" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="0" y1="250" x2="400" y2="250" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="80" y1="0" x2="80" y2="300" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="160" y1="0" x2="160" y2="300" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="240" y1="0" x2="240" y2="300" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <line x1="320" y1="0" x2="320" y2="300" stroke="#72C341" stroke-width=".5" opacity=".1"/>
+            <!-- abstract layout blocks -->
+            <rect x="40" y="40" width="140" height="90" rx="4" fill="#72C341" opacity=".08"/>
+            <rect x="40" y="40" width="140" height="90" rx="4" fill="none" stroke="#72C341" stroke-width="1" opacity=".2"/>
+            <rect x="200" y="40" width="160" height="40" rx="4" fill="#72C341" opacity=".05" stroke="#72C341" stroke-width=".5" opacity=".15"/>
+            <rect x="200" y="90" width="80" height="40" rx="4" fill="#72C341" opacity=".05" stroke="#72C341" stroke-width=".5" opacity=".15"/>
+            <rect x="40" y="150" width="320" height="30" rx="4" fill="#72C341" opacity=".05" stroke="#72C341" stroke-width=".5" opacity=".12"/>
+            <rect x="40" y="195" width="100" height="60" rx="4" fill="#72C341" opacity=".08" stroke="#72C341" stroke-width=".5" opacity=".2"/>
+            <rect x="160" y="195" width="200" height="25" rx="4" fill="#72C341" opacity=".04"/>
+            <rect x="160" y="230" width="120" height="25" rx="4" fill="#72C341" opacity=".04"/>
+            <!-- pen tool dot -->
+            <circle cx="200" cy="85" r="5" fill="#72C341" opacity=".6"/>
+            <circle cx="200" cy="85" r="10" fill="none" stroke="#72C341" stroke-width="1" opacity=".3"/>
+            <text x="200" y="270" text-anchor="middle" font-family="Sora,sans-serif" font-size="11" fill="#9C9EAB" opacity=".5">Annual Report Layout</text>
+          </svg>
+          <div class="work-overlay">
+            <div class="wo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>
+            <div class="wo-text">View project</div>
+          </div>
+        </div>
+        <div class="work-info">
+          <div class="wi-tags">
+            <span class="wi-tag" style="background:rgba(114,195,65,.1);color:var(--lime);border:0.5px solid rgba(114,195,65,.25)">Graphic design</span>
+          </div>
+          <div class="wi-name">Fintech Annual Report</div>
+          <div class="wi-sub">80-page layout · Print-ready</div>
+        </div>
+      </div>
+
+      <!-- card 3 — logo -->
+      <div class="work-card reveal reveal-d2" data-cat="logo">
+        <div class="work-thumb">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="300" fill="#120d0a"/>
+            <!-- hexagonal grid bg -->
+            <g opacity=".06">
+              <polygon points="80,40 120,40 140,75 120,110 80,110 60,75" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+              <polygon points="140,75 180,75 200,110 180,145 140,145 120,110" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+              <polygon points="200,40 240,40 260,75 240,110 200,110 180,75" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+              <polygon points="260,75 300,75 320,110 300,145 260,145 240,110" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+              <polygon points="140,145 180,145 200,180 180,215 140,215 120,180" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+              <polygon points="200,110 240,110 260,145 240,180 200,180 180,145" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+              <polygon points="260,145 300,145 320,180 300,215 260,215 240,180" fill="none" stroke="#FF6B2B" stroke-width="1"/>
+            </g>
+            <!-- central logo concept -->
+            <circle cx="200" cy="145" r="55" fill="none" stroke="#FF6B2B" stroke-width="1.5" opacity=".4"/>
+            <circle cx="200" cy="145" r="38" fill="#FF6B2B" opacity=".08"/>
+            <circle cx="200" cy="145" r="38" fill="none" stroke="#FF6B2B" stroke-width="1" opacity=".35"/>
+            <!-- abstract letterform -->
+            <path d="M182,125 L182,165 M182,125 L210,125 Q222,125 222,137 Q222,148 210,148 L182,148" fill="none" stroke="#FF6B2B" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+            <text x="200" y="260" text-anchor="middle" font-family="Sora,sans-serif" font-size="11" fill="#9C9EAB" opacity=".5">Brand Identity System</text>
+          </svg>
+          <div class="work-overlay">
+            <div class="wo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>
+            <div class="wo-text">View project</div>
+          </div>
+        </div>
+        <div class="work-info">
+          <div class="wi-tags">
+            <span class="wi-tag" style="background:rgba(255,107,43,.1);color:var(--orange);border:0.5px solid rgba(255,107,43,.25)">Logo design</span>
+          </div>
+          <div class="wi-name">Pinnacle — Full Identity</div>
+          <div class="wi-sub">Brand system · Guidelines · Assets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ PROCESS ══ -->
+<section id="process">
+  <div class="container">
+    <div style="text-align:center; max-width:540px; margin:0 auto 1rem;">
+      <span class="sec-label reveal">How it works</span>
+      <h2 class="sec-title reveal reveal-d1">Structured for speed.<br>Built for quality.</h2>
+    </div>
+    <div class="process-grid" style="margin-top:3rem;">
+      <div class="proc-step reveal">
+        <div class="proc-accent" style="background:var(--violet);"></div>
+        <div class="proc-num">01</div>
+        <div class="proc-title">Brief &amp; scope</div>
+        <div class="proc-desc">We align on goals, deliverables, timelines, and format requirements before a single file is opened.</div>
+      </div>
+      <div class="proc-step reveal reveal-d1">
+        <div class="proc-accent" style="background:var(--teal);"></div>
+        <div class="proc-num">02</div>
+        <div class="proc-title">Production</div>
+        <div class="proc-desc">Our team executes using professional software and AI-assisted workflows — precision at scale.</div>
+      </div>
+      <div class="proc-step reveal reveal-d2">
+        <div class="proc-accent" style="background:var(--magenta);"></div>
+        <div class="proc-num">03</div>
+        <div class="proc-title">Review &amp; refine</div>
+        <div class="proc-desc">You receive drafts with a structured feedback loop. Two revision rounds included on every project.</div>
+      </div>
+      <div class="proc-step reveal reveal-d3">
+        <div class="proc-accent" style="background:var(--lime);"></div>
+        <div class="proc-num">04</div>
+        <div class="proc-title">Deliver &amp; scale</div>
+        <div class="proc-desc">Platform-ready files, export presets, and documentation. Repeat or scale — we grow with you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ TESTIMONIALS ══ -->
+<section id="testimonials">
+  <div class="container" style="margin-bottom:2.5rem;">
+    <span class="sec-label reveal">Client stories</span>
+    <h2 class="sec-title reveal reveal-d1">Trusted by teams<br>across the globe.</h2>
+  </div>
+  <div class="testi-track">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"ColrMedia delivered our entire brand video series on time and under budget. The colour grading work was indistinguishable from a London agency — at a fraction of the cost."</div>
+      <div class="testi-author">James Whitfield</div>
+      <div class="testi-role">Marketing Director · UK</div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"The layout and illustration work they produced for our annual report was exceptional. Clean, precise, and delivered with zero back-and-forth after the brief."</div>
+      <div class="testi-author">Priya Sharma</div>
+      <div class="testi-role">COO · Fintech startup · Singapore</div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"We needed a full identity system from scratch — wordmark, brand guide, and a complete asset library. ColrMedia nailed it in two rounds. Highly recommend."</div>
+      <div class="testi-author">Daniel Osei</div>
+      <div class="testi-role">Founder · Creative agency · Ghana</div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"Reliable, fast, and their work holds up at the highest production standard. We've used ColrMedia for 18 months and they've never missed a deadline."</div>
+      <div class="testi-author">Sophie Laurent</div>
+      <div class="testi-role">Content Lead · Media company · France</div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"Outsourcing creative production always felt risky until ColrMedia. Their brief intake process gave us confidence from day one. The output speaks for itself."</div>
+      <div class="testi-author">Alex Torres</div>
+      <div class="testi-role">Brand Manager · US</div>
+    </div>
+    <!-- duplicate for loop -->
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"ColrMedia delivered our entire brand video series on time and under budget. The colour grading work was indistinguishable from a London agency — at a fraction of the cost."</div>
+      <div class="testi-author">James Whitfield</div>
+      <div class="testi-role">Marketing Director · UK</div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"The layout and illustration work they produced for our annual report was exceptional. Clean, precise, and delivered with zero back-and-forth after the brief."</div>
+      <div class="testi-author">Priya Sharma</div>
+      <div class="testi-role">COO · Fintech startup · Singapore</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CONTACT ══ -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-info">
+        <span class="sec-label reveal">Get in touch</span>
+        <h2 class="sec-title reveal reveal-d1">Let's make something worth seeing.</h2>
+        <p class="sec-body reveal reveal-d2">Book a free video call or send your brief. We'll come back with a clear scope, timeline, and quote — usually within 24 hours.</p>
+
+        <div class="contact-detail reveal reveal-d2">
+          <div class="cd-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div>
+            <div class="cd-label">Office</div>
+            <div class="cd-val">Bhanimandal 13, 2nd Floor<br>Lalitpur, Nepal 44700</div>
+          </div>
+        </div>
+        <div class="contact-detail reveal reveal-d3">
+          <div class="cd-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div>
+            <div class="cd-label">Email</div>
+            <div class="cd-val" style="color:var(--magenta)">admin@colrmedia.com</div>
+          </div>
+        </div>
+        <div class="contact-detail reveal reveal-d4">
+          <div class="cd-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div>
+            <div class="cd-label">Video call</div>
+            <div class="cd-val" style="color:var(--violet); cursor:pointer">Book a session →</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-wrap reveal reveal-d2">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First name</label>
+            <input class="form-input" type="text" placeholder="Sarah">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last name</label>
+            <input class="form-input" type="text" placeholder="Johnson">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input class="form-input" type="email" placeholder="sarah@company.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select service</label>
+          <select class="form-select">
+            <option value="" disabled selected>Choose a service...</option>
+            <option>Video editing &amp; post-production</option>
+            <option>Graphic design &amp; layout</option>
+            <option>Logo &amp; identity design</option>
+            <option>Multiple services</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tell us about your project *</label>
+          <textarea class="form-textarea" placeholder="Describe your project, timeline, and any reference links..."></textarea>
+        </div>
+        <button class="btn-submit">Send brief →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">C<span>o</span>lrMedia</div>
+        <div class="footer-tagline">Bold design. Fearlessly crafted. IT-enabled media production from Kathmandu, for the world.</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Video editing</a></li>
+          <li><a href="#services">Graphic design</a></li>
+          <li><a href="#services">Logo design</a></li>
+          <li><a href="#contact">Get a quote</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company info</div>
+        <div class="footer-address">
+          ColrMedia<br>
+          Bhanimandal 13 (2nd Floor)<br>
+          Lalitpur, Nepal 44700<br><br>
+          <a href="mailto:admin@colrmedia.com">admin@colrmedia.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 ColrMedia. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Brand guidelines</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ──────────────────────────────────────────────── -->
+<script>
+/* scroll progress */
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+/* sticky nav */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* reveal on scroll */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* portfolio filter */
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const f = pill.dataset.filter;
+    document.querySelectorAll('.work-card').forEach(card => {
+      if (f === 'all' || card.dataset.cat === f) {
+        card.style.opacity = '1'; card.style.pointerEvents = 'auto';
+        card.style.transform = '';
+      } else {
+        card.style.opacity = '.25'; card.style.pointerEvents = 'none';
+      }
+    });
+  });
+});
+
+/* active filter pill hover color */
+document.querySelectorAll('.filter-pill[data-filter="video"]').forEach(p => {
+  p.addEventListener('mouseenter', () => { if (!p.classList.contains('active')) p.style.color = 'var(--teal)'; });
+  p.addEventListener('mouseleave', () => { if (!p.classList.contains('active')) p.style.color = ''; });
+});
+document.querySelectorAll('.filter-pill[data-filter="graphic"]').forEach(p => {
+  p.addEventListener('mouseenter', () => { if (!p.classList.contains('active')) p.style.color = 'var(--lime)'; });
+  p.addEventListener('mouseleave', () => { if (!p.classList.contains('active')) p.style.color = ''; });
+});
+document.querySelectorAll('.filter-pill[data-filter="logo"]').forEach(p => {
+  p.addEventListener('mouseenter', () => { if (!p.classList.contains('active')) p.style.color = 'var(--orange)'; });
+  p.addEventListener('mouseleave', () => { if (!p.classList.contains('active')) p.style.color = ''; });
+});
+
+/* smooth scroll for anchors */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+/* parallax orbs */
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  document.querySelector('.orb-v').style.transform = `translateY(${y * 0.12}px)`;
+  document.querySelector('.orb-m').style.transform = `translateY(${y * -0.08}px)`;
+});
+</script>
+</body>
+</html>
